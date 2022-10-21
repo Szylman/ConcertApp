@@ -20,6 +20,7 @@ router.route('/seats').post((req, res) => {
     const id = uuid();
     const newSeat = { id, day, seat, client, email };
     seats.push(newSeat);
+    req.io.emit('seatsUpdated', seats);
     res.json({ message: 'OK' });
 });
 

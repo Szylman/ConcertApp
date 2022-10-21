@@ -4,7 +4,23 @@ const path = require('path');
 const cors = require('cors');
 const uuid = require('uuid').v4;
 const db = require('./db');
+const socket = require('socket.io');
 
+const server = app.listen(8000, () => {
+    console.log('Server is running on Port:', 8000)
+});
+
+const io = socket(server);
+
+io.on('connection', (socket) => {   
+
+    console.log('New socket!')
+});
+
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 
 //import routes
 const testimonialRoutes = require('./routes/testimonials.routes');
@@ -22,7 +38,3 @@ app.use('/api', seatsRoutes);
 app.use((req, res) => {
     res.status(404).json('404 not found...');
 })
-
-app.listen(8000, () => {
-    console.log('Server is running on port: 8000');
-});
