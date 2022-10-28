@@ -6,8 +6,8 @@ const uuid = require('uuid').v4;
 const db = require('./db');
 const socket = require('socket.io');
 
-const server = app.listen(8000, () => {
-    console.log('Server is running on Port:', 8000)
+app.listen(process.env.PORT || 8000, () => {
+    console.log('Server is running on port: 8000');
 });
 
 const io = socket(server);
@@ -32,8 +32,14 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/', testimonialRoutes);
-app.use('/api', concertRoutes);
-app.use('/api', seatsRoutes);
+app.use('/api/', concertRoutes);
+app.use('/api/', seatsRoutes);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+});
+
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.use((req, res) => {
     res.status(404).json('404 not found...');
