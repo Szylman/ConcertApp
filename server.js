@@ -35,11 +35,11 @@ app.use('/api/', testimonialRoutes);
 app.use('/api/', concertRoutes);
 app.use('/api/', seatsRoutes);
 
+app.use(express.static(path.join(__dirname, '/client/build')));
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
-
-app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.use((req, res) => {
     res.status(404).json('404 not found...');
