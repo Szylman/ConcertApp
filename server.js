@@ -6,7 +6,7 @@ const uuid = require('uuid').v4;
 const db = require('./db');
 const socket = require('socket.io');
 
-app.listen(process.env.PORT || 8000, () => {
+const server = app.listen(process.env.PORT || 8000, () => {
     console.log('Server is running on port: 8000');
 });
 
