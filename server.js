@@ -9,6 +9,20 @@ const server = app.listen(process.env.PORT || 8000, () => {
     console.log('Server is running on port: 8000');
 });
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
+
+// connects our backend code with the database
+mongoose.connect('mongodb+srv://Szylman:qwerty123@cluster0.iarn6tt.mongodb.net/ConcertDB',
+);
+const db = mongoose.connection;
+
+db.once('open', () => {
+    console.log('Connected to the database');
+});
+db.on('error', err => console.log('Error ' + err));
+
 const io = socket(server);
 
 io.on('connection', (socket) => {   
@@ -26,10 +40,6 @@ const testimonialRoutes = require('./routes/testimonials.routes');
 const concertRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(cors());
-
 app.use('/api/', testimonialRoutes);
 app.use('/api/', concertRoutes);
 app.use('/api/', seatsRoutes);
@@ -44,12 +54,3 @@ app.use((req, res) => {
     res.status(404).json('404 not found...');
 })
 
-// connects our backend code with the database
-mongoose.connect('mongodb://localhost:27017/NewWaveDB',
-{ useNewUrlParser: true });
-const db = mongoose.connection;
-
-db.once('open', () => {
-    console.log('Connected to the database');
-});
-db.on('error', err => console.log('Error ' + err));
