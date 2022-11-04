@@ -4,6 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const socket = require('socket.io');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 
 const server = app.listen(process.env.PORT || 8000, () => {
     console.log('Server is running on port: 8000');
@@ -12,6 +13,7 @@ const server = app.listen(process.env.PORT || 8000, () => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
 
 // connects our backend code with the database
 mongoose.connect('mongodb+srv://Szylman:qwerty123@cluster0.iarn6tt.mongodb.net/ConcertDB',
